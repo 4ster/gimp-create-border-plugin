@@ -31,7 +31,6 @@ def create_border(img, drawable, thickness=10, layer=None, BORDER_COLOR=(255, 25
     
     # crop layer
     pdb.plug_in_autocrop_layer(img, drawable)
-    # pdb.gimp_message("{0},{1},{2}".format(drawable.width, drawable.height, thickness))
     
     # get active layer
     layer = pdb.gimp_image_get_active_layer(img)
@@ -47,19 +46,15 @@ def create_border(img, drawable, thickness=10, layer=None, BORDER_COLOR=(255, 25
 
     # resize copied layer to original image size
     pdb.gimp_layer_resize_to_image_size(box)
-    # pdb.gimp_layer_resize_to_image_size(layer)
 
-    # transform original image to selection, extend it and substract previous selection from extended selection
+    # transform original image to selection and extend it
     pdb.gimp_image_select_item(img, CHANNEL_OP_REPLACE, layer)
     pdb.gimp_selection_border(img, thickness)
     pdb.gimp_image_select_item(img, CHANNEL_OP_ADD, layer)
 
-    pdb.gimp_selection_grow(img, CHANNEL_OP_ADD)
-    pdb.gimp_selection_sharpen(img)
-
     # activate copied layer
     pdb.gimp_image_set_active_layer(img, box)
-
+    
     # save current background value
     prev_background = gimp.get_background()
 
