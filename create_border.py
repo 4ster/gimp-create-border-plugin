@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from gimpfu import *
-import time
 
 # # GimpChannelOps
 # CHANNEL_OP_ADD = 0
@@ -52,10 +51,7 @@ def create_border(img, drawable, thickness=10, layer=None, BORDER_COLOR=(255, 25
 
     # transform original image to selection and extend it
     pdb.gimp_image_select_item(img, CHANNEL_OP_REPLACE, layer)
-    pdb.gimp_selection_border(img, thickness)
-    pdb.gimp_image_select_item(img, CHANNEL_OP_ADD, layer)
-
-    pdb.gimp_selection_grow(img, CHANNEL_OP_ADD)
+    pdb.gimp_selection_grow(img, thickness)
     pdb.gimp_selection_sharpen(img)
 
     # activate copied layer
@@ -71,10 +67,6 @@ def create_border(img, drawable, thickness=10, layer=None, BORDER_COLOR=(255, 25
 
     # restore prev background
     gimp.set_background(prev_background)
-
-    # crop layer
-    pdb.plug_in_autocrop_layer(img, drawable)
-    pdb.plug_in_autocrop_layer(img, pdb.gimp_image_get_active_drawable(img))
 
     # move box laer under the original image layer
     pdb.gimp_image_lower_item(img, box)
