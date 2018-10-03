@@ -28,7 +28,10 @@ def create_border(img, drawable, thickness=10, layer=None, BORDER_COLOR=(255, 25
     if 2*thickness>min(drawable.width, drawable.height):
         pdb.gimp_message("Thikness is too big for this image: {0}px".format(str(thickness)))
         return
-    
+
+    # start undo transaction
+    pdb.gimp_image_undo_group_start(img)
+
     # crop layer
     pdb.plug_in_autocrop_layer(img, drawable)
     
@@ -77,7 +80,11 @@ def create_border(img, drawable, thickness=10, layer=None, BORDER_COLOR=(255, 25
     if MERGE_LAYERS:
         pdb.gimp_image_merge_visible_layers(img, EXPAND_AS_NECESSARY)
 
+    # clear selection
     pdb.gimp_selection_clear(img)
+
+    # end undo transaction
+    pdb.gimp_image_undo_group_end(img)
 
 # register plugin params
 register(
