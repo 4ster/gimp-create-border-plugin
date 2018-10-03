@@ -55,6 +55,9 @@ def create_border(img, drawable, thickness=10, layer=None, BORDER_COLOR=(255, 25
     pdb.gimp_selection_border(img, thickness)
     pdb.gimp_image_select_item(img, CHANNEL_OP_ADD, layer)
 
+    pdb.gimp_selection_grow(img, CHANNEL_OP_ADD)
+    pdb.gimp_selection_sharpen(img)
+
     # activate copied layer
     pdb.gimp_image_set_active_layer(img, box)
     
