@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from gimpfu import *
+import time
 
 # # GimpChannelOps
 # CHANNEL_OP_ADD = 0
@@ -23,10 +24,15 @@ from gimpfu import *
 
 
 def create_border(img, drawable, thickness=10, layer=None, BORDER_COLOR=(255, 255, 255), MERGE_LAYERS=False):
-
+    # check if thikness not too big
+    if 2*thickness>min(drawable.width, drawable.height):
+        pdb.gimp_message("Thikness is too big for this image: {0}px".format(str(thickness)))
+        return
+    
     # crop layer
     pdb.plug_in_autocrop_layer(img, drawable)
-
+    # pdb.gimp_message("{0},{1},{2}".format(drawable.width, drawable.height, thickness))
+    
     # get active layer
     layer = pdb.gimp_image_get_active_layer(img)
 
@@ -76,6 +82,7 @@ def create_border(img, drawable, thickness=10, layer=None, BORDER_COLOR=(255, 25
     if MERGE_LAYERS:
         pdb.gimp_image_merge_visible_layers(img, EXPAND_AS_NECESSARY)
 
+    pdb.gimp_selection_clear(img)
 
 # register plugin params
 register(
